@@ -1,5 +1,3 @@
-> If you can’t explain it simply, you don’t understand it well enough.
+> The rest of the world may follow the rules, but I must follow my heart.
 
-```java
-System.out.println("Hello World!")
-```
+If you can’t explain it simply, you don’t understand it well enough.
