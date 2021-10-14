@@ -7,7 +7,7 @@ lang: en
 published: true
 categories: Interview
 tags:
-  - Interview Java Web
+  - Interview
 ---
 
 
