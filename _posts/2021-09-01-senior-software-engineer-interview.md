@@ -1,13 +1,13 @@
 ---
 layout: post
-title: 细雪
+title: Senior Software Engineer Interview
 author: 细雪
 header-style: text
 lang: en
 published: true
-categories: Web
+categories: Interview
 tags:
-  - Web
+  - Interview Java Web
 ---
 
 
@@ -537,3 +537,4 @@ var isPalindrome = function(head) {
     }
     return true;
 };
+```
