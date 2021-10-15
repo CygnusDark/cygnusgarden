@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Longest Substring Without Repeating Characters
+title: Median of Two Sorted Arrays
 author: 细雪
 header-style: text
 lang: en
