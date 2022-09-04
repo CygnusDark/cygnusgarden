@@ -28,16 +28,11 @@ tags:
 ## 双指针
 ``` java
     public int maxArea(int[] height) {
-        int res=0;
-        int left = 0, right = height.length - 1;
-        while (left < right) {
-            int area = Math.min(height[left], height[right]) * (right-left);
-            res = Math.max(area,res);
-            if (height[left] < height[right]) {
-                left++;
-            } else {
-                right--;
-            }
+        int i = 0, j = height.length - 1, res = 0;
+        while(i < j) {
+            res = height[i] < height[j] ? 
+                Math.max(res, (j - i) * height[i++]): 
+                Math.max(res, (j - i) * height[j--]); 
         }
         return res;
     }
