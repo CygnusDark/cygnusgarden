@@ -19,25 +19,13 @@ tags:
 说明: 叶子节点是指没有子节点的节点。
 
 示例：
-给定二叉树 [3,9,20,null,null,15,7]，
-
-    3
-   / \
-  9  20
-    /  \
-   15   7
+给定二叉树 [3,9,20,null,null,15,7]
    
 # 解法
 ## 深度优先搜索
 ``` java
 public int maxDepth(TreeNode root) {
-        if (root == null) {
-            return 0;
-        } else {
-            int leftHeight = maxDepth(root.left);
-            int rightHeight = maxDepth(root.right);
-            return Math.max(leftHeight, rightHeight) + 1;
-        }
+        return root == null ? 0 : Math.max(maxDepth(root.left), maxDepth(root.right)) + 1;
     }
 ```
 
