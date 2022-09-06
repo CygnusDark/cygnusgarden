@@ -25,13 +25,13 @@ tags:
 ## 深度优先搜索
 ``` java
 public int maxDepth(TreeNode root) {
-        return root == null ? 0 : Math.max(maxDepth(root.left), maxDepth(root.right)) + 1;
-    }
+    return root == null ? 0 : Math.max(maxDepth(root.left), maxDepth(root.right)) + 1;
+}
 ```
 
 ## 广度优先搜索
 ``` java
-public int maxDepth(TreeNode root) {
+    public int maxDepth(TreeNode root) {
         if (root == null) {
             return 0;
         }
