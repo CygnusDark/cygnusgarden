@@ -1,6 +1,6 @@
 # Site settings
-title: CYGNUS GARDEN
-SEOTitle: CYGNUS GARDEN
+title: 希纳斯的庭院
+SEOTitle: 希纳斯的庭院
 header-img: img/bg.jpg
 email: 375666731@qq.com
 description: "我亦涉云水 花叶沾身 何以证我微诚"
@@ -64,7 +64,7 @@ ga_domain: "cygnusdark.github.io"
 
 # Sidebar settings
 sidebar: true                           # whether or not using Sidebar.
-sidebar-about-description: "李逍遥"
+sidebar-about-description: "希纳斯的庭院"
 sidebar-avatar: /cygnusgarden/img/avatar.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
 
 
