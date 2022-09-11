@@ -64,7 +64,7 @@ ga_domain: "cygnusdark.github.io"
 
 # Sidebar settings
 sidebar: true                           # whether or not using Sidebar.
-sidebar-about-description: "希纳斯的庭院"
+sidebar-about-description: "cygnusdark"
 sidebar-avatar: /cygnusgarden/img/avatar.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
 
 
