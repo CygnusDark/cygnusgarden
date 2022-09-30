@@ -5,7 +5,7 @@ author: 细雪
 header-style: text
 lang: en
 published: true
-categories: algorithm
+categories: 技术分享
 tags:
   - 技术分享
 ---

@@ -7,7 +7,7 @@ lang: en
 published: true
 categories: 问题排查
 tags:
-  - 技术分享
+  - 问题排查
 ---
 
 Flink TaskManager OOM问题排查方式：
