@@ -11,7 +11,6 @@ tags:
 ---
 
 # 线程间通信常见问题
-## 问题
 1. 三个线程分别打印 A，B，C，要求这三个线程一起运行，打印 n 次，输出形如“ABCABCABC…”
 2. 两个线程交替打印 0~100 的奇偶数
 3. 通过 N 个线程顺序循环打印从 0 至 100
@@ -257,6 +256,63 @@ public class PrintABCUsingLockCondition {
 ```
 
 ## Semaphore解法 第一题
+``` java
+import java.util.concurrent.Semaphore;
+
+public class PrintABCUsingSemaphore {
+
+    public static void main(String[] args) {
+        // 初始化许可数为1，A线程可以先执行
+        Semaphore semaphoreA = new Semaphore(1);
+        // 初始化许可数为0，B线程阻塞
+        Semaphore semaphoreB = new Semaphore(0);
+        // 初始化许可数为0，C线程阻塞
+        Semaphore semaphoreC = new Semaphore(0);
+
+        new Thread(() -> {
+            for (int i = 0; i < 10; i++) {
+                try {
+                    // A线程获得许可，同时semaphoreA的许可数减为0,进入下一次循环时
+                    // A线程会阻塞，知道其他线程执行semaphoreA.release();
+                    semaphoreA.acquire();
+                    // 打印当前线程名称
+                    System.out.print(Thread.currentThread().getName());
+                    // semaphoreB许可数加1
+                    semaphoreB.release();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, "A").start();
+
+        new Thread(() -> {
+            for (int i = 0; i < 10; i++) {
+                try {
+                    semaphoreB.acquire();
+                    System.out.print(Thread.currentThread().getName());
+                    semaphoreC.release();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, "B").start();
+
+        new Thread(() -> {
+            for (int i = 0; i < 10; i++) {
+                try {
+                    semaphoreC.acquire();
+                    System.out.print(Thread.currentThread().getName());
+                    semaphoreA.release();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, "C").start();
+    }
+}
+```
+
+## Semaphore解法 第三题
 ``` java
 public class LoopPrinter {
 
