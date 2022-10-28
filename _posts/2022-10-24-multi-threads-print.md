@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 多线程按顺序执行
+title: 线程间通信
 author: 细雪
 header-style: text
 lang: en
