@@ -5,9 +5,9 @@ author: 细雪
 header-style: text
 lang: en
 published: true
-categories: algorithm
+categories: Algorithm
 tags:
-  - algorithm
+  - Algorithm
 ---
 
 # Hash
