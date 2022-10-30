@@ -5,9 +5,9 @@ author: 细雪
 header-style: text
 lang: en
 published: true
-categories:  技术分享
+categories:  algorithm
 tags:
-  - 技术分享
+  - algorithm
 ---
 
 ``` java
