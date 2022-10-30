@@ -5,9 +5,9 @@ author: 细雪
 header-style: text
 lang: en
 published: true
-categories:  alogrithm
+categories:  algorithm
 tags:
-  - alogrithm
+  - algorithm
 ---
 
 ``` java
