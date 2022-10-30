@@ -5,9 +5,9 @@ author: 细雪
 header-style: text
 lang: en
 published: true
-categories: 问题排查
+categories: Flink
 tags:
-  - 问题排查
+  - Flink
 ---
 
 Flink TaskManager OOM问题排查方式：

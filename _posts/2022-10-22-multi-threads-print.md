@@ -5,9 +5,9 @@ author: 细雪
 header-style: text
 lang: en
 published: true
-categories:  技术分享
+categories:  多线程
 tags:
-  - 技术分享
+  - 多线程
 ---
 
 # 线程间通信常见问题
