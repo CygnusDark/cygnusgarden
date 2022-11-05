@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Flink保证数据一致性在新浪微博风控业务的实践
+title: Flink保证数据一致性
 author: 细雪
 header-style: text
 lang: en

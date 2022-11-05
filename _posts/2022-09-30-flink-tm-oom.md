@@ -10,7 +10,7 @@ tags:
   - Flink
 ---
 
-Flink TaskManager OOM问题排查方式：
+## 打印GC日志
 可以通过加入如下JVM参数，发生OOM时进行堆栈打印，通常是由于内存泄漏问题导致的OOM
 
 -Xloggc:/opt/flink/log/gc.log GC 日志的存储位置
@@ -23,3 +23,6 @@ Flink TaskManager OOM问题排查方式：
 -XX:+PrintPromotionFailure 输出导致 GC 的原因
 -XX:+HeapDumpOnOutOfMemoryError 发生内存泄漏时，自动打印 heapdump 文件
 -XX:HeapDumpPath=/opt/flink/log/heap.hprof heapdump 文件路径
+
+## 排查GC时间
+-XX:+UseG1GC -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+PrintGCDateStamps -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=5 -XX:GCLogFileSize=128M -XX:+PrintGCApplicationStoppedTime -XX:+PrintGCApplicationConcurrentTime
