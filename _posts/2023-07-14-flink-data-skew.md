@@ -20,9 +20,9 @@ keyBy 或 rebalance 下游的算子，如果单个 subtask 存在热点并完全
 如下图所示，上游每个 Subtask 中会有 3 个 resultSubPartition，连接下游算子的 3 个 subtask。下游每个 subtask 会有 2 个 InputChannel，连接上游算子的 2 个 subtask。Local BufferPool为subtask中的ResultSubpartition/InputChannel所共用，在正常运行过程中如果没有反压，所有的 buffer pool 是用不完的。
 
 一旦subtask B0变成热点，则会引起反压，依次产生如下问题：
-    1. Subtask B0 内的 A0 和 A1 两个 InputChannel 会被占满；Subtask B0 公共的 BufferPool 中可申请到的空间也被占满
-    2. Subtask A0 和 A1 的 B0 ResultSubPartition 被占满；Subtask A0 和 A1 公共的 BufferPool 中可申请到的空间也被占满
-    3. 如图2所示，Subtask A0 的主线程会从上游读取数据消费，按照数据的 KeyBy 规则，将数据发送到 B0、B1、B2 三个 ResultSubpartition 中；可以看到，如果 B0 这个ResultSubpartition占满了，且 B0 在公共的 Local BufferPool 中可申请到的空间也被占满。现在有一条数据被keyby后发往B0，但是现在 B0 这个ResultSubpartition 没有空间了，所以主线程就会卡在申请 buffer 上，直到可以再申请到 buffer
+    a. Subtask B0 内的 A0 和 A1 两个 InputChannel 会被占满；Subtask B0 公共的 BufferPool 中可申请到的空间也被占满
+    b. Subtask A0 和 A1 的 B0 ResultSubPartition 被占满；Subtask A0 和 A1 公共的 BufferPool 中可申请到的空间也被占满
+    c. 如图2所示，Subtask A0 的主线程会从上游读取数据消费，按照数据的 KeyBy 规则，将数据发送到 B0、B1、B2 三个 ResultSubpartition 中；可以看到，如果 B0 这个ResultSubpartition占满了，且 B0 在公共的 Local BufferPool 中可申请到的空间也被占满。现在有一条数据被keyby后发往B0，但是现在 B0 这个ResultSubpartition 没有空间了，所以主线程就会卡在申请 buffer 上，直到可以再申请到 buffer
 
 Subtask A0 的主线程被卡住，则不会往下游的任何subtask发送数据了，如图1所示，下游的Subtask B1和Subtask B2不再接收新数据。整个任务处于瘫痪状态
 
@@ -48,8 +48,8 @@ Flink默认设置forward分区策略有两个条件：
 此时，北京和上海对应的flatmap算子必然会出现热点数据，由于source到flatmap算子之间并不需要有特定的对应关系，因此可以采用不同的分区策略来将数据打乱，让不同省份的车流数据落到所有的flatmap算子，消除数据倾斜。
 
 因此，我们只需要破坏forward分区策略的条件即可
-    1. 修改两个算子的并行度
-    2. 强行设定分区策略：``dataStream.rebalance();``
+    a. 修改两个算子的并行度
+    b. 强行设定分区策略：``dataStream.rebalance();``
 
 ### 两阶段聚合
 所谓两阶段聚合，即在需要shuffle的两个算子之间，再加一层算子
