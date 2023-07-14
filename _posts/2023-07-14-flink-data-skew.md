@@ -11,13 +11,13 @@ tags:
 ---
 
 ## 定义
-当进行聚合运算时（Group By/KeyBy + Agg），如果聚合所使用的key存在热点，则会导致数据倾斜。如统计某日各个省份的车流量，则负责运算北京、上海等一线城市的count subtask节点则会成为热点，处理数据的压力会比较大。
+当进行聚合运算时（Group By/KeyBy + Agg），如果聚合所使用的key存在热点，则会导致数据倾斜。如统计某日各个省份的车流量，则负责运算北京、上海等一线城市的count subtask节点则会成为热点，处理数据的压力会比较大
 
 ### 危害
 
 #### 任务卡死
 keyBy 或 rebalance 下游的算子，如果单个 subtask 存在热点并完全卡死，会把整个 Flink 任务卡死。看如下示例：
-如下图所示，上游每个 Subtask 中会有 3 个 resultSubPartition，连接下游算子的 3 个 subtask。下游每个 subtask 会有 2 个 InputChannel，连接上游算子的 2 个 subtask。Local BufferPool为subtask中的ResultSubpartition/InputChannel所共用，在正常运行过程中如果没有反压，所有的 buffer pool 是用不完的。
+如下图所示，上游每个 Subtask 中会有 3 个 resultSubPartition，连接下游算子的 3 个 subtask。下游每个 subtask 会有 2 个 InputChannel，连接上游算子的 2 个 subtask。Local BufferPool为subtask中的ResultSubpartition/InputChannel所共用，在正常运行过程中如果没有反压，所有的 buffer pool 是用不完的
 
 一旦subtask B0变成热点，则会引起反压，依次产生如下问题：
 1. Subtask B0 内的 A0 和 A1 两个 InputChannel 会被占满；Subtask B0 公共的 BufferPool 中可申请到的空间也被占满
