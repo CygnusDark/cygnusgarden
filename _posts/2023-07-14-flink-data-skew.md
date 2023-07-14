@@ -61,7 +61,7 @@ Flink默认设置forward分区策略有两个条件：
 ### 手段
 我们以sql的优化作为范例进行讲解，这样更加直观和简洁。DataStream API无非就是仿照sql的group by + agg模式，增加一层keyby + agg。
 
-1. 修改sql
+#### 修改sql
 有如下需求，按天统计每个类目的成交额
 
 ``` SQL
@@ -92,7 +92,7 @@ GROUP BY cdate,category_id
 SQL中做了将一个Group By+Agg拆称了两个，子查询里按照category_id和mod(hash_code(FLOOR(RAND(1)*1000), 256)分组，将同一个category_id上的数据打散成了256份，先做一层聚合。外层Group By+Agg，将子查询聚合后的结果再次做聚合。这样通过两层聚合的方式，即可大大缓解某聚合节点拥堵的现象。其数据流程图如下：
 这种方法达到了两个优化目标，在日期的基础上再将数据分成256份，打散数据，减轻算子1和算子2之间的热点问题；在算子2进行了初步的sum聚合，减小了到达算子3的数据量，减轻了算子2和算子3之间的热点问题。 该方法通过取余的方式将数据进一步打散，另有给key添加随机数的方式进行打散
 
-2. Local-Global
+#### Local-Global
 
 LocalGlobal和PartialFinal其实都属于两阶段聚合，只不过封装了拆解逻辑，我们只需要对Flink SQL任务做简单的配置即可。
 
@@ -120,7 +120,7 @@ configuration.setString("table.exec.mini-batch.size", "5000");
 configuration.setString("table.optimizer.agg-phase-strategy", "TWO_PHASE");
 ```
 
-3. Partial-Final
+#### Partial-Final
 
 LocalGlobal优化针对普通聚合（例如SUM、COUNT、MAX、MIN和AVG）有较好的效果，对于COUNT DISTINCT收效不明显，因为COUNT DISTINCT在Local聚合时，对于DISTINCT KEY的去重率不高，导致在Global节点仍然存在热点
 如下场景，统计一天的UV
