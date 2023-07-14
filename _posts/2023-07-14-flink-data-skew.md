@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Flink SQL 数据倾斜优化
+title: Flink数据倾斜优化
 author: 细雪
 header-style: text
 lang: en
