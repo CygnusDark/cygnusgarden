@@ -32,7 +32,7 @@ checkpoint barrier也是一种特殊的数据，如果整个任务中各个可�
 ## State变大
 对于有两个以上输入管道的 Operator，存在checkpoint barrier对齐机制，接受到较快的输入管道的 barrier 后，它后面数据会被缓存起来但不处理，直到较慢的输入管道的 barrier 也到达，这些被缓存的数据会被放到state 里面，导致 checkpoint 变大。
 
-# 解决办法
+# 🎃解决办法
 ## 修改分区策略
 
 ### 目标
