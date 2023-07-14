@@ -64,7 +64,7 @@ Flink默认设置forward分区策略有两个条件：
 #### 修改sql
 有如下需求，按天统计每个类目的成交额
 
-``` SQL
+``` sql
 SELECT 
     date_format(ctime, '%Y%m%d') as cdate, -- 将数据从时间戳格式（2018-12-04 15:44:54），转换为date格式(20181204)
        category_id,
@@ -76,7 +76,7 @@ GROUP BY date_format(ctime, '%Y%m%d'), category_id; --按照天做聚合
 Group By + Agg 模式中，SQL作业性能与数据分布非常相关，如果数据中存在数据倾斜，也就是某个key的数据异常的多，那么某个聚合节点就会成为瓶颈，作业就会有明显的反压及延时现象。 
 用两阶段聚合方法优化后的SQL如下：
 
-``` SQL
+``` sql
 SELECT cdate,category_id,sum(category_gmv_p) as category_gmv
 FROM(
     SELECT 
@@ -99,7 +99,7 @@ LocalGlobal和PartialFinal其实都属于两阶段聚合，只不过封装了拆
 LocalGlobal优化可以用来解决聚合时的数据倾斜问题。其核心思想是，将聚合分为两个阶段执行，先在上游进行局部(本地/Local)聚合，再在下游进行全局(Global)聚合，类似MapReduce的Combine + Reduce，即先进行一个本地Reduce，再进行全局Reduce。该方法，只完成了先进行一次聚合，减少数据量这个目标
 以如下场景为例
 
-``` SQL
+``` sql
 SELECT color, sum(id)
 FROM T
 GROUP BY color
@@ -107,7 +107,7 @@ GROUP BY color
 
 开启LocalGlobal：
 
-``` Java
+``` java
 TableEnvironment tEnv = ...
 Configuration configuration = tEnv.getConfig().getConfiguration();
 
@@ -125,7 +125,7 @@ configuration.setString("table.optimizer.agg-phase-strategy", "TWO_PHASE");
 LocalGlobal优化针对普通聚合（例如SUM、COUNT、MAX、MIN和AVG）有较好的效果，对于COUNT DISTINCT收效不明显，因为COUNT DISTINCT在Local聚合时，对于DISTINCT KEY的去重率不高，导致在Global节点仍然存在热点
 如下场景，统计一天的UV
 
-``` SQL
+``` sql
 SELECT day, COUNT(DISTINCT user_id)
 FROM T
 GROUP BY day
@@ -134,7 +134,7 @@ GROUP BY day
 如果user_id比较稀疏，即便开启了LocalGlobal优化，收效也并不明显，因为COUNT DISTINCT在Local阶段时，去重率并不高，这就导致在Global阶段仍然存在热点问题。不满足第一条目标和第二条目标。
 为了解决这一问题，需要将原始聚合拆分成两层聚合:
 
-``` SQL
+``` sql
 SELECT day, SUM(cnt)
 FROM (
     SELECT day, COUNT(DISTINCT user_id) as cnt
@@ -146,7 +146,7 @@ GROUP BY day
 
 现在Blink Planner提供了PartialFinal功能，无需自己拆解sql，只要简单的配置即可，配置如下：
 
-``` Java
+``` java
 TableEnvironment tEnv = ...
 Configuration configuration = tEnv.getConfig().getConfiguration();
 
