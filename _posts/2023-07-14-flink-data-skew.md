@@ -1,19 +1,18 @@
 ---
 layout: post
-title: Flink数据倾斜优化
+title: Flink 数据倾斜优化
 author: 细雪
 header-style: text
 lang: en
 published: true
-categories:  Flink
 tags:
   - Flink
 ---
 
-# 🎃定义
+# 定义
 当进行聚合运算时（GroupBy/KeyBy + Agg），如果聚合所使用的key存在热点，则会导致数据倾斜。如统计某日各个省份的车流量，则负责运算北京、上海等一线城市的count subtask节点则会成为热点，处理数据的压力会比较大。
 
-# 🎃危害
+# 危害
 
 ## 任务卡死
 keyBy 或 rebalance 下游的算子，如果单个 subtask 存在热点并完全卡死，会把整个 Flink 任务卡死。看如下示例：
@@ -32,7 +31,7 @@ checkpoint barrier也是一种特殊的数据，如果整个任务中各个可�
 ## State变大
 对于有两个以上输入管道的 Operator，存在checkpoint barrier对齐机制，接受到较快的输入管道的 barrier 后，它后面数据会被缓存起来但不处理，直到较慢的输入管道的 barrier 也到达，这些被缓存的数据会被放到state 里面，导致 checkpoint 变大。
 
-# 🎃解决办法
+# 解决办法
 ## 修改分区策略
 
 ### 目标
